@@ -4,7 +4,21 @@
 
 {% block page_content %}
     <div class="container">
-        <h1> Inicio de Sesion </h1>
-        <p> Pagina de Inicio de Sesion </p>
+        <div class="row mt-2 mb-2">
+            <div class="col-sm">
+                {% for message in messages %}
+                <div>
+                    {% if message.tags %}
+                        {% if message.tags == 'error' %}
+                            alert-danger
+                        {% else %}
+                            alert-{{ message.tags }}
+                        {% endif %}
+                    {% else %}
+                        alert-info
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
