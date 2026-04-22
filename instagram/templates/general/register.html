@@ -5,6 +5,8 @@
 
 {% block page_content %}
     <div class="container">
+        {% include '_includes/messages.html' %}
+
         <h1> Registrate </h1>
         <form action="">
             {% csrf_token %}
@@ -18,7 +20,7 @@
                 </div>
             </div>
 
-            <bottom class="btn btn-secondary"></bottom>
+            <bottom class="btn btn-secondary">Registrate</bottom>
 
         </form>
     </div>

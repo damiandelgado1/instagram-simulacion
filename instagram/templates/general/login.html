@@ -2,23 +2,24 @@
 
 {% block head_title %} Bienvenido a InstaConquer {% endblock %}
 
-{% block page_content %}
-    <div class="container">
-        <div class="row mt-2 mb-2">
-            <div class="col-sm">
-                {% for message in messages %}
-                <div>
-                    {% if message.tags %}
-                        {% if message.tags == 'error' %}
-                            alert-danger
-                        {% else %}
-                            alert-{{ message.tags }}
-                        {% endif %}
-                    {% else %}
-                        alert-info
-                    {% endif %}
+{% block page_content %}    
+
+    {% include '_includes/messages.html' %}
+
+    <h1>Pagina de Inicio de Sesion</h1>
+
+    <form action="">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    {{ form.username | as_crispy_field }}
+                    {{ form.password | as_crispy_field }}
                 </div>
             </div>
-        </div>
-    </div>
+
+            <bottom class="btn btn-secondary">Inicia Sesion</bottom>
+
+        </form>
+
 {% endblock %}
