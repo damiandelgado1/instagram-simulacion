@@ -1,0 +1,5 @@
+<article>
+    <img src="{{ post.image.url }}" width="300" alt="{{ post.text }}">
+    <p> Publicado por {{ post.user.email }} el {{ post.created_at }} - {{ post.likes.all.count }} Likes </p>
+    <p> {{ post.text }} </p>
+</article>

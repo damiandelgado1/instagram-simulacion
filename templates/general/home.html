@@ -8,5 +8,13 @@
         {% include '_includes/messages.html' %}
 
         <p> Este es el contenido de la Pagina de Inicio</p>
+
+        <section>
+            <h2> Ultimas Publicaciones </h2>
+
+            {% for post in last_posts %}
+                {% include '_includes/posts/_post.html' %}
+            {% endfor %}
+        </section>
     </div>
 {% endblock %}
