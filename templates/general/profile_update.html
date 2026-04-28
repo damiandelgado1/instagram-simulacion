@@ -1,0 +1,21 @@
+{% extends "general/layout.html" %}
+
+{% block head_title %} Bienvenido a InstaConquer {% endblock %}
+
+{% block page_content %}
+    <div class="container">
+        {% include '_includes/messages.html' %}
+
+        <h1> Editar Perfil </h1>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    {{ form.user | as_crispy_field }}
+                    {{ form.photo | as_crispy_field }}
+                    {{ form.bio | as_crispy_field }}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

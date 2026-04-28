@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from profiles.models import Profile
 
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -12,6 +13,8 @@ class RegistrationForm(forms.ModelForm):
         user = super().save(commit=True)
         user.set_password(self.cleaned_data["password"])
         user.save()
+
+        Profile.objects.create(user=user)
 
         return user
 

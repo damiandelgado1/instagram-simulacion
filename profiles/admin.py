@@ -1,8 +1,8 @@
 from django.contrib import admin
-from profiles.models import UserProfile, Follow
+from profiles.models import Profile, Follow
 
-@admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
     list_display = ["user", "birth_date"]
 
 @admin.register(Follow)
