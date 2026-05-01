@@ -5,8 +5,9 @@
         <nav>
             <ul>
                 <li> <a href="{% url 'home' %}"> Inicio </a> </li>
-                <li> <a href="{% url 'register' %}"> Register </a> </li> 
+                <li> <a href="{% url 'profile_list' %}"></a> </li>
                 {% if not request.user.is_authenticated %}
+                    <li> <a href="{% url 'register' %}"> Register </a> </li> 
                     <li> <a href="{% url 'login' %}"> Login </a> </li>
                 {% endif %}
                 <li> <a href="{% url 'contact' %}"> Contacto </a> </li>

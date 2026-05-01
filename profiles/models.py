@@ -15,6 +15,9 @@ class Profile(models.Model):
     def __str__(self):
         return self.user
 
+    def follow(self, profile):
+        Follow.objects.get_or_create(follower=self, following=profile)
+
 class Follow(models.Model):
     follower = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="¿Quien sigue?", related_name='follower_set')
     following = models.ForeignKey(Profile, on_delete=models.CASCADE, verbose_name="¿A quien sigue?", related_name='following_set')

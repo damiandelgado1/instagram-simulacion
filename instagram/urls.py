@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import HomeView, RegisterView, LoginView, ContactView, LegalView, logout_view, ProfileDetailView, ProfileUpdateView
+from .views import HomeView, RegisterView, LoginView, ContactView, LegalView, logout_view, ProfileListView, ProfileDetailView, ProfileUpdateView
 from post.views import PostCreateView
 
 
@@ -12,7 +12,8 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', logout_view, name="logout"),
     path('contact/', ContactView.as_view(), name="contact"),
-    path('profile/', ProfileDetailView.as_view(), name="profile_detail"),
+    path('profile/list/', ProfileListView.as_view(), name="profile_list"),
+    path('profile/<pk>/', ProfileDetailView.as_view(), name="profile_detail"),
     path('profile/update/<pk>/', ProfileUpdateView.as_view(), name="profile_update"),
     path('post/create/', PostCreateView.as_view(), name="post_create"),
     path('legal/', LegalView.as_view(), name="legal"),

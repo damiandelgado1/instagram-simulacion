@@ -22,3 +22,7 @@ class RegistrationForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label="email")
     password = forms.CharField(label="password", widget=forms.PasswordInput())
+
+
+class ProfileFollow(forms.Form):
+    profile_pk = forms.IntegerField(widget=forms.HiddenInput)
