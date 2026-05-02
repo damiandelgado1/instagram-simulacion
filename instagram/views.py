@@ -8,10 +8,10 @@ from django.contrib import messages
 from .forms import RegistrationForm, LoginForm
 from profiles.models import User
 from django.contrib.auth import authenticate, login, logout
-from profiles.models import Profile
+from profiles.models import Profile, Follow
 from post.models import Post
 from .forms import ProfileFollow
-import ipdb;
+import ipdb
 
 
 
@@ -21,10 +21,15 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        last_posts = Post.objects.all().order_by('-created_at')[:5]
-        context['last_posts'] = last_posts
+        if self.request.user.is_authenticated:
+            follows = Follow.objects.filter(follower=self.request.user.profile).values_list('following__user', flat=True)
+            last_posts = Post.objects.filter(user__profile__user__in = follows)
 
-        return context
+        else:
+            last_posts = Post.objects.all().order_by('-created_at')[:5]
+            context['last_posts'] = last_posts
+
+            return context
 
 
 class LoginView(FormView):
@@ -84,16 +89,46 @@ class ProfileDetailView(DetailView, FormView):
     context_object_name = "profile"
     form_class = ProfileFollow
 
+    def get_initial(self):
+        self.initial['profile.pk'] = self.get_object().pk
+        return super().get_initial()
+
     def form_valid(self, form):
         profile_pk = form.cleaned_data.get('profile_pk')
-        profile = Profile.objects.get(pk=profile_pk)
-        ipdb.set_trace()
-        self.request.user.profile.follow(profile)
-        messages.add_message(self.request, messages.SUCCESS, f"Usuario seguido")
-        return super(ProfileDetailView, self).form_valid(form)
+        action = form.cleaned_data.get('action')
+        following = Profile.objects.get(pk=profile_pk)
+
+        if Follow.objects.get_or_create(
+            follower = self.request.user.profile,
+            following = following
+        ).exist():
+            Follow.objects.filter(
+                follower = self.request.user.profile,
+                following = following
+            ).delete()
+        else:
+            Follow.objects.get_or_create(
+                follower = self.request.user.profile,
+                following = following
+            )
+
+        if action == 'follow':
+            Follow.objects.get_or_create(
+                follower = self.request.user.profile,
+                following = following
+            ).exist()
+
+        elif action == 'unfollow':
+            Follow.objects.filter(follower=self.request.user.profile, following=following)
+            messages.add_message(self.request, messages.SUCCESS, f"Se ha dejado de seguir")
+            { following.user.username }
 
     def get_success_url(self):
-        return reverse('profile_detail', args=[self.request.user.profile.pk])
+        return reverse('profile_detail', args=[self.get_object().pk])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 @method_decorator(login_required, name="dispatch")
